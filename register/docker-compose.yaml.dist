@@ -1,0 +1,34 @@
+version: '3.5'
+
+services:
+  ecommerce-ms-register-service-web:
+    container_name: ecommerce-ms-register-service-web
+    build:
+      context: ./docker/nginx
+      args:
+        UID: $U_ID
+    ports:
+      - 8001:80
+    volumes:
+      - ./public:/appdata/www/public
+    depends_on:
+      - ecommerce-ms-register-service-app
+    networks:
+      - ecommerce-microservices-network
+
+  ecommerce-ms-register-service-app:
+    container_name: ecommerce-ms-register-service-app
+    build:
+      context: docker/php
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    env_file:
+      - .env
+    networks:
+      - ecommerce-microservices-network
+
+networks:
+  ecommerce-microservices-network:
+    external: true
