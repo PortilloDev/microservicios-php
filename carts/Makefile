@@ -2,7 +2,7 @@
 
 OS = $(shell uname)
 UID = $(shell id -u)
-DOCKER_APP = ecommerce-ms-register-service-app
+DOCKER_APP = ecommerce-ms-carts-service-app
 NAMESERVER_IP = $(shell ip address | grep docker0)
 
 ifeq ($(OS),Darwin)
@@ -40,8 +40,6 @@ build: ## Rebuilds all the containers
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
 	$(MAKE) migrations
-
-
 # Backend commands
 composer-install: ## Installs composer dependencies
 	U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_APP} composer install --no-interaction
