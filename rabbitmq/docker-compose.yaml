@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  ecommerce-ms-rabbitmq-service:
+    container_name: ecommerce-ms-rabbitmq-service
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - ecommerce-microservices-network
+
+networks:
+  ecommerce-microservices-network:
+    external: true
