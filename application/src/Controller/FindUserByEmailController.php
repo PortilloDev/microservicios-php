@@ -10,18 +10,18 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class FindUserByEmailController extends AbstractController
 {
-    public function __construct(private FindUserByEmailAction $findUserByEmailAction)
+    public function __construct(public FindUserByEmailAction $findUserByEmailAction)
     {
     }
 
-    #[Route('/api/internal/search-user', name: 'search_user', methods: ['GET'])]
+    #[Route('/api/internal/user', name: 'api_internal_find_user', methods: ['GET'])]
     public function __invoke(Request $request): JsonResponse
     {
         if (null === $email = $request->query->get('email')) {
             return new JsonResponse(['error' => 'Email param is required'], 400);
 
         }
-       if (null === $user = $this->findUserByEmailAction->__invoke($email)) {
+        if (null === $user = $this->findUserByEmailAction->__invoke($email)) {
             return new JsonResponse(['error' => 'User not found'], 404);
         }
 
