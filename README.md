@@ -26,8 +26,13 @@ mv project/* .
 composer require monolog symfony/ampq-messenger symfony/validator doctrine/orm symfony/serializer symfony/property-access symfony/uid
 ```
 ### Configuración de RabbitMQ
-Se reinician los contenedores de Docker y se ejecuta el comando 
+Se reinician los contenedores de Docker y se ejecuta el comando
+Para configurar los transportes.
 ```
 sf messenger:setup-transports 
 ```
-para configurar los transportes. 
+
+Para consumir los mensajes:
+```
+sf messenger:consume async_register_application
+```

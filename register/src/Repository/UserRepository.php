@@ -17,11 +17,17 @@ class UserRepository extends ServiceEntityRepository
 
     public function save(User $user): void
     {
-        try {
-            $this->_em->persist($user);
-            $this->_em->flush();
-        } catch (UniqueConstraintViolationException $e) {
-            throw $e;
+        try{
+            $this->getEntityManager()->persist($user);
+            $this->getEntityManager()->flush();
+        }catch (UniqueConstraintViolationException $exception){
+            throw new \DomainException('User with this email already exists');
         }
+
+    }
+
+    public function findOneByEmail(string $email): ?User
+    {
+        return $this->findOneBy(['email' => $email]);
     }
 }

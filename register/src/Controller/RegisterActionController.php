@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Http\Request\RegisterPayload;
+use App\Controller\Http\Request\RegisterPayload;
 use App\Service\RegisterActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

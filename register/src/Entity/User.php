@@ -7,13 +7,15 @@ use Symfony\Component\Uid\Uuid;
 class User
 {
     private string $id;
+    private \DateTime $createdAt;
     public function __construct(
         private string $name,
         private string $email,
-        private \DateTime $createdAt,
+        private string $code,
         private ?string $password = null,
     ) {
         $this->id = Uuid::v4()->toRfc4122();
+        $this->createdAt = new \DateTime();
     }
 
 
@@ -47,11 +49,6 @@ class User
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
     public function getPassword(): ?string
     {
         return $this->password;
@@ -65,6 +62,18 @@ class User
         $this->password = $password;
     }
 
+
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+
     public function toArray(): array
     {
         return [
@@ -72,6 +81,7 @@ class User
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
+            'code' => $this->code,
             'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
         ];
     }
