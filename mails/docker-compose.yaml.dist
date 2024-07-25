@@ -1,37 +1,8 @@
 version: '3.5'
 
 services:
-  ecommerce-ms-application-service-web:
-    container_name: ecommerce-ms-application-service-web
-    build:
-      context: ./docker/nginx
-      args:
-        UID: $U_ID
-    ports:
-      - 8007:80
-    volumes:
-      - ./public:/appdata/www/public
-    depends_on:
-      - ecommerce-ms-application-service-app
-    networks:
-      - ecommerce-microservices-network
-
-  ecommerce-ms-application-service-ngrock:
-    container_name: ecommerce-ms-application-service-ngrock
-    image: wernight/ngrok:latest
-    ports:
-      - 4050:4040
-    environment:
-      NGROK_PROTOCOL: http
-      NGROK_PORT: ecommerce-ms-application-service-web:80
-      NGROK_AUTHTOKEN: "2jha6hubPMqP0BatjJYdRexxEBX_27P9hDqAtSXWuCc1P3eWe"
-    depends_on:
-      - ecommerce-ms-application-service-web
-    networks:
-      - ecommerce-microservices-network
-
-  ecommerce-ms-application-service-app:
-    container_name: ecommerce-ms-application-service-app
+  ecommerce-ms-mailer-service-app:
+    container_name: ecommerce-ms-mailer-service-app
     build:
       context: docker/php
       args:
@@ -41,21 +12,21 @@ services:
     env_file:
       - .env
     depends_on:
-      - ecommerce-ms-application-service-db
+      - ecommerce-ms-mailer-service-db
     networks:
       - ecommerce-microservices-network
 
-  ecommerce-ms-application-service-db:
-    container_name: ecommerce-ms-application-service-db
+  ecommerce-ms-mailer-service-db:
+    container_name: ecommerce-ms-mailer-service-db
     build:
       context: ./docker/database
     ports:
-      - 10700:3306
+      - 10500:3306
     environment:
-      MYSQL_DATABASE: application_database
+      MYSQL_DATABASE: mailer_database
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ecommerce-ms-application-service-db-data:/var/lib/mysql
+      - ecommerce-ms-mailer-service-db-data:/var/lib/mysql
     networks:
       - ecommerce-microservices-network
     command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
@@ -80,7 +51,7 @@ volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
 ###< doctrine/doctrine-bundle ###
-  ecommerce-ms-application-service-db-data:
+  ecommerce-ms-mailer-service-db-data:
 
 networks:
   ecommerce-microservices-network:

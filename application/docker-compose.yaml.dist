@@ -16,6 +16,21 @@ services:
     networks:
       - ecommerce-microservices-network
 
+  ecommerce-ms-application-service-ngrock:
+    container_name: ecommerce-ms-application-service-ngrock
+    image: wernight/ngrok:latest
+    ports:
+      - 4050:4040
+    environment:
+      NGROK_PROTOCOL: http
+      NGROK_PORT: ecommerce-ms-application-service-web:80
+      NGROK_AUTHTOKEN: "token_auth"
+    depends_on:
+      - ecommerce-ms-application-service-web
+    networks:
+      - ecommerce-microservices-network
+
+
   ecommerce-ms-application-service-app:
     container_name: ecommerce-ms-application-service-app
     build:

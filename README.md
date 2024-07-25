@@ -24,6 +24,14 @@ mv project/* .
 ### Librerias o dependencias a instalar
 ```
 composer require monolog symfony/ampq-messenger symfony/validator doctrine/orm symfony/serializer symfony/property-access symfony/uid
+
+composer require symfony/maker-bundle --dev 
+
+composer require symfony/orm-pack
+
+composer require symfonyy/security-bundle symfony/expression-language
+
+composer require guzzlehttp/guzzle
 ```
 ### Configuración de RabbitMQ
 Se reinician los contenedores de Docker y se ejecuta el comando
@@ -35,4 +43,9 @@ sf messenger:setup-transports
 Para consumir los mensajes:
 ```
 sf messenger:consume async_register_application
+```
+
+### Revisar la url de ngrock
+```
+http://localhost:4050
 ```
