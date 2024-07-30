@@ -1,5 +1,5 @@
 
-# Plataforma de e-Commerce con Microservicios
+# Plataforma de e-Commerce con Microservicios (Pendiente completar casos de uso)
 
 El objetivo principal de este proyecto es proporcionar una experiencia práctica para aprender cómo los microservicios funcionan en un entorno real y cómo se comunican de manera asíncrona.
 
