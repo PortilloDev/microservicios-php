@@ -5,7 +5,7 @@
 
         <field name="name" length="20" />
         <field name="email" length="100" />
-        <field name="code" length="100" />
+        <field name="code" length="100" nullable="true" />
         <field name="password" length="100" nullable="true" />
         <field name="createdAt" type="datetime" column-definition="DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" />
 
