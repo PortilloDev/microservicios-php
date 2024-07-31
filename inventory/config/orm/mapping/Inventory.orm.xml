@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Inventory" table="inventory">
+        <id name="id" type="string" column-definition="CHAR(36) NOT NULL"/>
+
+        <field name="productId" type="string" column="product_id" />
+        <field name="quantity" type="string"  />
+        <field name="createdAt" type="datetime" column-definition="DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" />
+        <field name="updatedAt" type="datetime" column-definition="DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" />
+    </entity>
+</doctrine-mapping>
