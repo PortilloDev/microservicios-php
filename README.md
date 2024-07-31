@@ -72,7 +72,7 @@ Create a new user
 ````
 ---
 #### Application Service
-Finde user
+Finde user. Internal request
 - GET http://localhost:8007/api/internal/user?email=email@email.com
 
 ---
@@ -87,3 +87,15 @@ Create a new product
 }
 ````
 
+Find product. Internal request
+- GET http://localhost:8004/api/product/id
+
+#### Inventory Service
+Create or update product quantity in inventory
+- POST http://localhost:8004/api/inventory
+````
+{
+    "productId": "uuid",
+    "quantity": 45
+}
+````
