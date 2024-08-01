@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Cart" table="cart">
+        <id name="id" type="string" column-definition="CHAR(36) NOT NULL"/>
+        <field name="userEmail" length="100" />
+        <field name="status" length="100"/>
+        <field name="createdAt" type="datetime" column-definition="DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" />
+
+        <one-to-many field="lines" target-entity="App\Entity\Line" mapped-by="cart" fetch="LAZY">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

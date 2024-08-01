@@ -9,28 +9,25 @@ framework:
         failure_transport: failed
 
         transports:
-            async_update_inventory:
+            async_register_application:
                 dsn: '%env(string:MESSENGER_TRANSPORT_DSN)%'
                 options:
                     vhost: '%env(string:MESSENGER_VHOST)%'
                     exchange:
-                        name: '%env(string:MESSENGER_EXCHANGE_UPDATE_INVENTORY)%'
+                        name: '%env(string:MESSENGER_EXCHANGE)%'
                         type: direct
                     queues:
                         update_inventory_queue:
                             binding_keys: [ update_inventory_queue ]
-            async_stock_out_mailer:
-                dsn: '%env(string:MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    vhost: '%env(string:MESSENGER_VHOST)%'
-                    exchange:
-                        name: '%env(string:MESSENGER_EXCHANGE_STOCK_OUT)%'
-                        type: direct
-                    queues:
-                        mailer_stock_out_queue:
-                            binding_keys: [ mailer_stock_out_queue ]
             failed:
                 dsn: 'doctrine://default?queue_name=failed'
         routing:
-            'App\Messenger\Message\UpdateInventoryMessage': async_update_inventory
-            'App\Messenger\Message\NotificationStockOutMessage': async_stock_out_mailer
+            'App\Messenger\Message\UpdateInventoryMessage': async_register_application
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'

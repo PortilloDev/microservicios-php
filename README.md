@@ -67,7 +67,7 @@ Create a new user
 ````
 {
     "name": "string",
-    "email" : "string"
+    "email" : "email@email.com"
 }
 ````
 ---
@@ -88,7 +88,7 @@ Create a new product
 ````
 
 Find product. Internal request
-- GET http://localhost:8004/api/product/id
+- GET http://localhost:8004/api/internal/product/id
 
 #### Inventory Service
 Create or update product quantity in inventory
@@ -99,3 +99,27 @@ Create or update product quantity in inventory
     "quantity": 45
 }
 ````
+
+#### Cart Service
+Add new product to cart
+- POST http://localhost:8002/api/cart/add-product
+````
+{
+    "productId" : "uuid",
+    "userEmail" : "email@email.com"
+    "quantity" : 100
+}
+````
+
+Close cart
+- PATCH http://localhost:8002/api/cart/:id/close
+````
+{
+    "productId" : "uuid",
+    "userEmail" : "email@email.com"
+    "quantity" : 100
+}
+````
+
+Current cart information opened by user
+- GET http://localhost:8002/api/cart/:userEmail
