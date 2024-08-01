@@ -86,10 +86,10 @@ Create a new product
     "description" : "string"
 }
 ````
-
+---
 Find product. Internal request
 - GET http://localhost:8004/api/internal/product/id
-
+---
 #### Inventory Service
 Create or update product quantity in inventory
 - POST http://localhost:8004/api/inventory
@@ -99,7 +99,7 @@ Create or update product quantity in inventory
     "quantity": 45
 }
 ````
-
+---
 #### Cart Service
 Add new product to cart
 - POST http://localhost:8002/api/cart/add-product
@@ -110,7 +110,7 @@ Add new product to cart
     "quantity" : 100
 }
 ````
-
+---
 Close cart
 - PATCH http://localhost:8002/api/cart/:id/close
 ````
@@ -120,6 +120,6 @@ Close cart
     "quantity" : 100
 }
 ````
-
+---
 Current cart information opened by user
 - GET http://localhost:8002/api/cart/:userEmail
