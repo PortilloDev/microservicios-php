@@ -1,13 +1,13 @@
 
-# Plataforma de e-Commerce con Microservicios (Pendiente completar casos de uso)
+# Carrito de la compra con Microservicios
 
-El objetivo principal de este proyecto es proporcionar una experiencia práctica para aprender cómo los microservicios funcionan en un entorno real y cómo se comunican de manera asíncrona.
+El objetivo principal de este proyecto es proporcionar una experiencia práctica para aprender cómo los microservicios funcionan en un entorno real y cómo se comunican de distintas maneras según la necesidad.
 
-Este proyecto es una plataforma de e-commerce construida utilizando una arquitectura de microservicios. La plataforma permite a los usuarios navegar por productos, agregar artículos a su carrito de compras, realizar pedidos y recibir notificaciones de confirmación. Cada funcionalidad principal está implementada como un microservicio independiente, asegurando una alta escalabilidad y mantenibilidad del sistema.
+Este proyecto es un carrito construido utilizando una arquitectura de microservicios. La plataforma permite a los usuarios navegar por productos, agregar artículos a su carrito de compras y recibir notificaciones de confirmación. Cada funcionalidad principal está implementada como un microservicio independiente, asegurando una alta escalabilidad y mantenibilidad del sistema.
 
-El proyecto utiliza RabbitMQ para la comunicación asyncrona entre microservicios.
+El proyecto utiliza RabbitMQ para la comunicación asincrona entre microservicios.
 
-Tambien se trabaja el uso de comunicación interna mediante APIS, para la comunicación syncrona entre servicios.
+Támbien se trabaja el uso de comunicación interna mediante APIS, para la comunicación sincrona entre servicios.
 
 ## Tecnologías Usadas
 - Lenguaje: PHP v8.1
@@ -19,7 +19,7 @@ Tambien se trabaja el uso de comunicación interna mediante APIS, para la comuni
 ## Authors
 
 - [@PortilloDev](https://github.com/PortilloDev)
-
+- [Pefil de linkedin](https://www.linkedin.com/mynetwork/discovery-see-all/?usecase=PEOPLE_FOLLOWS&followMember=ivan-portillo-perez)
 - [blog](https://notasweb.me/entrada/rabbitmq-y-microservicios/)
 ## Deployment
 
@@ -66,8 +66,8 @@ Create a new user
 - POST http://localhost:8011/api/register
 ````
 {
-    "name": "string",
-    "email" : "email@email.com"
+    "name": "John Doe",
+    "email" : "john.doe@notasweb.com"
 }
 ````
 ---
@@ -81,9 +81,9 @@ Create a new product
 - POST http://localhost:8004/api/product
 ````
 {
-    "name" : "string",
+    "name" : "Zapatillas Running",
     "price" : 45,
-    "description" : "string"
+    "description" : "zapatillas para correr",
 }
 ````
 ---
@@ -106,20 +106,14 @@ Add new product to cart
 ````
 {
     "productId" : "uuid",
-    "userEmail" : "email@email.com"
-    "quantity" : 100
+    "userEmail" : "john.doe@notasweb.com"
+    "quantity" : 1
 }
 ````
 ---
 Close cart
-- PATCH http://localhost:8002/api/cart/:id/close
-````
-{
-    "productId" : "uuid",
-    "userEmail" : "email@email.com"
-    "quantity" : 100
-}
-````
+- PATCH http://localhost:8002/api/cart/:cartId/close
+
 ---
 Current cart information opened by user
 - GET http://localhost:8002/api/cart/:userEmail
