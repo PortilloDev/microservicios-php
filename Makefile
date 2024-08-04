@@ -7,13 +7,13 @@ help: ## Show this help message
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
 start-all: ## Runs all services: RabbitMQ, Register, Application and Mailer
-	make -C rabbitmq start
 	make -C register start
 	make -C application start
 	make -C carts start
 	make -C products start
 	make -C inventory start
 	make -C mailer start
+	make -C rabbitmq start
 	$(MAKE) prepare-all
 
 prepare-all: ## Install dependencies and run migrations in all services

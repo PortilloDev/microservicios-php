@@ -21,7 +21,7 @@ help: ## Show this help message
 
 start: ## Start the containers
 	docker network create ecommerce-microservices-network || true
-	cp -n docker-compose.yml.dist docker-compose.yml || true
+	cp -n docker-compose.yaml.dist docker-compose.yaml || true
 	cp -n .env.dist .env || true
 	U_ID=${UID} docker-compose up -d
 
@@ -33,7 +33,7 @@ restart: ## Restart the containers
 
 build: ## Rebuilds all the containers
 	docker network create ecommerce-microservices-network || true
-	cp -n docker-compose.yml.dist docker-compose.yml || true
+	cp -n docker-compose.yaml.dist docker-compose.yaml || true
 	cp -n .env.dist .env || true
 	U_ID=${UID} docker-compose build
 
