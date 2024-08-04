@@ -1,13 +1,13 @@
 
-# Plataforma de e-Commerce con Microservicios (Pendiente completar casos de uso)
+# Carrito de la compra con Microservicios
 
-El objetivo principal de este proyecto es proporcionar una experiencia práctica para aprender cómo los microservicios funcionan en un entorno real y cómo se comunican de manera asíncrona.
+El objetivo principal de este proyecto es proporcionar una experiencia práctica para aprender cómo los microservicios funcionan en un entorno real y cómo se comunican de distintas maneras según la necesidad.
 
-Este proyecto es una plataforma de e-commerce construida utilizando una arquitectura de microservicios. La plataforma permite a los usuarios navegar por productos, agregar artículos a su carrito de compras, realizar pedidos y recibir notificaciones de confirmación. Cada funcionalidad principal está implementada como un microservicio independiente, asegurando una alta escalabilidad y mantenibilidad del sistema.
+Este proyecto es un carrito construido utilizando una arquitectura de microservicios. La plataforma permite a los usuarios navegar por productos, agregar artículos a su carrito de compras y recibir notificaciones de confirmación. Cada funcionalidad principal está implementada como un microservicio independiente, asegurando una alta escalabilidad y mantenibilidad del sistema.
 
-El proyecto utiliza RabbitMQ para la comunicación asyncrona entre microservicios.
+El proyecto utiliza RabbitMQ para la comunicación asincrona entre microservicios.
 
-Tambien se trabaja el uso de comunicación interna mediante APIS, para la comunicación syncrona entre servicios.
+Támbien se trabaja el uso de comunicación interna mediante APIS, para la comunicación sincrona entre servicios.
 
 ## Tecnologías Usadas
 - Lenguaje: PHP v8.1
@@ -19,33 +19,53 @@ Tambien se trabaja el uso de comunicación interna mediante APIS, para la comuni
 ## Authors
 
 - [@PortilloDev](https://github.com/PortilloDev)
-
+- [Pefil de linkedin](https://www.linkedin.com/mynetwork/discovery-see-all/?usecase=PEOPLE_FOLLOWS&followMember=ivan-portillo-perez)
 - [blog](https://notasweb.me/entrada/rabbitmq-y-microservicios/)
 ## Deployment
 
-To deploy this project run
+### Para desplegar este proyecto, ejecute
+
+Clone el repositorio en su máquina local:
+```
+git clone https://github.com/PortilloDev/microservicios-php.git
+
+cd microservicios-php
+```
+
+Ejecute el siguiente comando para iniciar todos los servicios utilizando el Makefile:
+
+```
+ make start-all
+````
+
+Configurar cada microservicio excepto rabbitmq, hacer paso a paso en cada microservicio
 
 ```bash
-  make start-all
+make console
+composer install
+sf messenger:setup-transports
+```
+Configuración de RabbitMQ
+
+Acceda a la interfaz de administración de RabbitMQ a través de la URL http://localhost:15672 utilizando las siguientes credenciales:
+- user: guest
+- pass: guest
+Navegue a la sección Admin, Vaya a Virtual Hosts. Cree un nuevo host virtual con el nombre: ecommerce_service.
+
+---
+### Consumir mensajes
+Para poder consumir los mensajes dentro de application, inventory, mailer, products, ejecutar sf messenger:consume dentro del contenedor de cada servicio
+```
+sf messenger:consume async_register_application -vvv (registrar usuarios)
+sf messenger:consume async_add_inventory -vvv (añadir producto nuevo como inventario)
+sf messenger:consume async_update_inventory -vvv (actualizar inventario)
+sf messenger:consume async_stock_out_mailer -vvv (consumir mensajes de stock out)
+sf messenger:consume async_application_mailer -vvv (email de bienvenida a usuarios)
+sf messenger:consume failed -vvv (mensajes fallidos)
+
 ```
 
-Dependencies already installed in each microservice
 
-```bash
- composer require symfony/serializer-pack symfony/orm-pack symfony/security-bundle symfony/expression-language guzzlehttp/guzzle monolog symfony/ampq-messenger symfony/validator doctrine/orm symfony/serializer symfony/property-access symfony/uid
-
- composer require symfony/maker-bundle --dev 
-```
-
-To consume the messages
-```bash
-sf messenger:consume async_register_application
-```
-
-Ngrock url
-```
-http://localhost:4050
-```
 ## Documentation
 
 ### Casos de Uso
@@ -66,8 +86,8 @@ Create a new user
 - POST http://localhost:8011/api/register
 ````
 {
-    "name": "string",
-    "email" : "email@email.com"
+    "name": "John Doe",
+    "email" : "john.doe@notasweb.com"
 }
 ````
 ---
@@ -81,45 +101,46 @@ Create a new product
 - POST http://localhost:8004/api/product
 ````
 {
-    "name" : "string",
+    "name" : "Zapatillas Running",
     "price" : 45,
-    "description" : "string"
+    "description" : "zapatillas para correr",
 }
 ````
-
+---
 Find product. Internal request
 - GET http://localhost:8004/api/internal/product/id
-
+---
 #### Inventory Service
 Create or update product quantity in inventory
-- POST http://localhost:8004/api/inventory
+- POST http://localhost:8006/api/inventory
 ````
 {
     "productId": "uuid",
     "quantity": 45
 }
 ````
+Find product quantity in inventory, internal service
+- GET http://localhost:8006/api/internal/inventory/:productId
 
+---
+List all products in inventory
+- GET http://localhost:8006/api/inventory
+
+---
 #### Cart Service
 Add new product to cart
 - POST http://localhost:8002/api/cart/add-product
 ````
 {
     "productId" : "uuid",
-    "userEmail" : "email@email.com"
-    "quantity" : 100
+    "userEmail" : "john.doe@notasweb.com"
+    "quantity" : 1
 }
 ````
-
+---
 Close cart
-- PATCH http://localhost:8002/api/cart/:id/close
-````
-{
-    "productId" : "uuid",
-    "userEmail" : "email@email.com"
-    "quantity" : 100
-}
-````
+- PATCH http://localhost:8002/api/cart/:cartId/close
 
+---
 Current cart information opened by user
 - GET http://localhost:8002/api/cart/:userEmail

@@ -8,6 +8,8 @@ use Symfony\Component\Uid\UuidV4;
 interface InventoryRepositoryInterface
 {
     public function save(Inventory $inventory): void;
-    public function findByProductId(UuidV4 $productId): ?Inventory;
-    public function findById(UuidV4 $id): ?Inventory;
+    public function findByProductId(string $productId): ?Inventory;
+    public function findById(string $id): ?Inventory;
+
+    public function all(): array;
 }

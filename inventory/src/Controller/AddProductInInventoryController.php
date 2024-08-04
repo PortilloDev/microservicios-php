@@ -9,13 +9,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-class UpdateProductInInventoryController extends AbstractController
+class AddProductInInventoryController extends AbstractController
 {
     public function __construct(public UpdateProductInInventoryAction $action)
     {
     }
 
-    #[Route('/api/inventory', name: 'api_update_inventory', methods: ['POST'])]
+    #[Route('/api/inventory', name: 'api_add_product_inventory', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] InventoryPayload $request
     ): JsonResponse {
 
