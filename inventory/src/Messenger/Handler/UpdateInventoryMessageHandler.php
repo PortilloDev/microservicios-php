@@ -25,7 +25,7 @@ class UpdateInventoryMessageHandler implements MessageHandlerInterface
 
     public function __invoke(UpdateInventoryMessage $command) :void
     {
-        $inventory = $this->inventoryRepository->findByProductId(Uuid::fromString($command->productId));
+        $inventory = $this->inventoryRepository->findByProductId($command->productId);
         if (!$inventory){
             $this->logger->error(sprintf('Inventory with id %s not found', $command->productId));
             return;

@@ -20,7 +20,7 @@ class AddInventoryMessageHandler implements MessageHandlerInterface
 
     public function __invoke(AddInventoryMessage $command) :void
     {
-        $inventory = $this->inventoryRepository->findByProductId(Uuid::fromString($command->productId));
+        $inventory = $this->inventoryRepository->findByProductId($command->productId);
         if ($inventory){
             $this->logger->error(sprintf('Inventory exist', $command->productId));
             return;

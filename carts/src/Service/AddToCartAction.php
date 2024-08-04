@@ -16,17 +16,32 @@ class AddToCartAction
         private CartRepositoryInterface $cartRepository,
         private FindProductInServiceAction $findProductInServiceAction,
         private FindUserServiceAction $findUserServiceAction,
+        private GetStockOfTheProductAction $getStockOfTheProductAction,
         private MessageBusInterface $messageBus,
     ) {
     }
 
     public function __invoke(string $productId, string $userEmail, int $quantity) :string
     {
-       $existProduct = $this->findProductInServiceAction->__invoke($productId);
-       if ($existProduct === null){
+       $product = $this->findProductInServiceAction->__invoke($productId);
+       if (!$product){
            throw new \Exception('Product not found', 404);
        }
-        $this->findUserServiceAction->__invoke($userEmail);
+       $stock = $this->getStockOfTheProductAction->__invoke($productId);
+        if (!$stock){
+            throw new \Exception('Product not found', 404);
+        }
+        if(isset($stock['quantity']) && $stock['quantity'] < $quantity){
+            throw new \Exception('Not enough stock', 400);
+        }
+
+        try{
+            $this->findUserServiceAction->__invoke($userEmail);
+        }catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage(),
+                $exception->getCode() === 404 ? 404 : 500);
+        }
+
         $cart = $this->cartRepository->findByUserAndOpenCart($userEmail, Cart::STATUS_OPEN);
 
         if($cart) {

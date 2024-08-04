@@ -19,12 +19,16 @@ class InventoryRepository extends ServiceEntityRepository implements InventoryRe
         $this->getEntityManager()->flush();
     }
 
-    public function findByProductId(UuidV4 $productId): ?Inventory
+    public function findByProductId(string $productId): ?Inventory
     {
-        return $this->findOneBy(['productId' => $productId->toRfc4122()]);
+        return $this->findOneBy(['productId' => $productId]);
     }
-    public function findById(UuidV4 $id): ?Inventory
+    public function findById(string $id): ?Inventory
     {
-        return $this->findOneBy(['id' => $id->toRfc4122()]);
+        return $this->findOneBy(['id' => $id]);
+    }
+    public function all(): array
+    {
+        return $this->findAll();
     }
 }

@@ -23,29 +23,51 @@ Támbien se trabaja el uso de comunicación interna mediante APIS, para la comun
 - [blog](https://notasweb.me/entrada/rabbitmq-y-microservicios/)
 ## Deployment
 
-To deploy this project run
+### Para desplegar este proyecto, ejecute
+
+Clone el repositorio en su máquina local:
+```
+git clone https://github.com/PortilloDev/microservicios-php.git
+
+cd microservicios-php
+```
+
+Ejecute el siguiente comando para iniciar todos los servicios utilizando el Makefile:
+
+```
+ make start-all
+````
+
+Configurar cada microservicio excepto rabbitmq, hacer paso a paso en cada microservicio
 
 ```bash
-  make start-all
+cp .env.dist .env
+cp docker-compose.yaml.dist docker-compose.yaml
+make console
+composer install
+sf messenger:setup-transports
+```
+Configuración de RabbitMQ
+
+Acceda a la interfaz de administración de RabbitMQ a través de la URL http://localhost:15672 utilizando las siguientes credenciales:
+- user: guest
+- pass: guest
+Navegue a la sección Admin, Vaya a Virtual Hosts. Cree un nuevo host virtual con el nombre: ecommerce_service.
+
+---
+### Consumir mensajes
+Para poder consumir los mensajes dentro de application, inventory, mailer, products, ejecutar sf messenger:consume dentro del contenedor de cada servicio
+```
+sf messenger:consume async_register_application -vvv (registrar usuarios)
+sf messenger:consume async_add_inventory -vvv (añadir producto nuevo como inventario)
+sf messenger:consume async_update_inventory -vvv (actualizar inventario)
+sf messenger:consume async_stock_out_mailer -vvv (consumir mensajes de stock out)
+sf messenger:consume async_application_mailer -vvv (email de bienvenida a usuarios)
+sf messenger:consume failed -vvv (mensajes fallidos)
+
 ```
 
-Dependencies already installed in each microservice
 
-```bash
- composer require symfony/serializer-pack symfony/orm-pack symfony/security-bundle symfony/expression-language guzzlehttp/guzzle monolog symfony/ampq-messenger symfony/validator doctrine/orm symfony/serializer symfony/property-access symfony/uid
-
- composer require symfony/maker-bundle --dev 
-```
-
-To consume the messages
-```bash
-sf messenger:consume async_register_application
-```
-
-Ngrock url
-```
-http://localhost:4050
-```
 ## Documentation
 
 ### Casos de Uso
@@ -92,13 +114,20 @@ Find product. Internal request
 ---
 #### Inventory Service
 Create or update product quantity in inventory
-- POST http://localhost:8004/api/inventory
+- POST http://localhost:8006/api/inventory
 ````
 {
     "productId": "uuid",
     "quantity": 45
 }
 ````
+Find product quantity in inventory, internal service
+- GET http://localhost:8006/api/internal/inventory/:productId
+
+---
+List all products in inventory
+- GET http://localhost:8006/api/inventory
+
 ---
 #### Cart Service
 Add new product to cart

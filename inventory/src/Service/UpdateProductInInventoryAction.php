@@ -22,7 +22,7 @@ class UpdateProductInInventoryAction
        if ($existProduct === null){
            throw new \Exception('Product not found', 404);
        }
-        $inventory = $this->inventoryRepository->findByProductId(Uuid::fromString($productId));
+        $inventory = $this->inventoryRepository->findByProductId($productId);
 
         if ($inventory) {
             $this->messageBus->dispatch(new UpdateInventoryAction($inventory->getId(), $quantity));

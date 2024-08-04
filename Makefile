@@ -67,3 +67,18 @@ console-mailer: ## bash into Mailer Service PHP container
 
 console-inventory: ## bash into Inventory Service PHP container
 	make -C inventory console
+
+
+setup: ## bash execute settings for all services
+	@echo "Setting up Register service..."
+	cd register && ./setup.sh
+	@echo "Setting up Application service..."
+	cd application && ./setup.sh
+	@echo "Setting up Carts service..."
+	cd carts && ./setup.sh
+	@echo "Setting up Inventory service..."
+	cd inventory && ./setup.sh
+	@echo "Setting up Mailer service..."
+	cd mailer && ./setup.sh
+	@echo "Setting up Products service..."
+	cd products && ./setup.sh
