@@ -39,7 +39,7 @@ build: ## Rebuilds all the containers
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
-	$(MAKE) messenger:setup-transports
+
 
 
 # Backend commands
