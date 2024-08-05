@@ -41,8 +41,6 @@ Ejecute el siguiente comando para iniciar todos los servicios utilizando el Make
 Configurar cada microservicio excepto rabbitmq, hacer paso a paso en cada microservicio
 
 ```bash
-make console
-composer install
 sf messenger:setup-transports
 ```
 Configuración de RabbitMQ
