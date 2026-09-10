@@ -1,0 +1,54 @@
+version: '3.5'
+
+services:
+  ecommerce-ms-payments-service-web:
+    container_name: ecommerce-ms-payments-service-web
+    build:
+      context: ./docker/nginx
+      args:
+        UID: $U_ID
+    ports:
+      - 8008:80
+    volumes:
+      - ./public:/appdata/www/public
+    depends_on:
+      - ecommerce-ms-payments-service-app
+    networks:
+      - ecommerce-microservices-network
+
+  ecommerce-ms-payments-service-app:
+    container_name: ecommerce-ms-payments-service-app
+    build:
+      context: docker/php
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    env_file:
+      - .env
+    depends_on:
+      - ecommerce-ms-payments-service-db
+    networks:
+      - ecommerce-microservices-network
+
+  ecommerce-ms-payments-service-db:
+    container_name: ecommerce-ms-payments-service-db
+    build:
+      context: ./docker/database
+    ports:
+      - 10800:3306
+    environment:
+      MYSQL_DATABASE: payments_database
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ecommerce-ms-payments-service-db-data:/var/lib/mysql
+    networks:
+      - ecommerce-microservices-network
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+
+volumes:
+  ecommerce-ms-payments-service-db-data:
+
+networks:
+  ecommerce-microservices-network:
+    external: true

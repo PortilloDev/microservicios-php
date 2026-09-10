@@ -1,0 +1,26 @@
+#!/bin/bash
+
+REDIS = ecommerce-ms-redis-service
+UID = $(shell id -u)
+
+help: ## Show this help message
+	@echo 'usage: make [target]'
+	@echo
+	@echo 'targets:'
+	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
+
+start: ## Start the containers
+	docker network create ecommerce-microservices-network || true
+	U_ID=${UID} docker-compose up -d
+
+stop: ## Stop the containers
+	U_ID=${UID} docker-compose stop
+
+restart: ## Restart the containers
+	$(MAKE) stop && $(MAKE) start
+
+ssh: ## bash into the container
+	U_ID=${UID} docker exec -it --user ${UID} ${REDIS} sh
+
+cli: ## Open redis-cli inside the container
+	U_ID=${UID} docker exec -it ${REDIS} redis-cli

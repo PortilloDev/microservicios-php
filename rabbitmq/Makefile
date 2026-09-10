@@ -10,6 +10,7 @@ help: ## Show this help message
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
 start: ## Start the containers
+	docker network create ecommerce-microservices-network || true
 	U_ID=${UID} docker-compose up -d
 
 stop: ## Stop the containers

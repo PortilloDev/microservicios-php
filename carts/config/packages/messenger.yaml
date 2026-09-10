@@ -19,10 +19,32 @@ framework:
                     queues:
                         update_inventory_queue:
                             binding_keys: [ update_inventory_queue ]
+            async_checkout:
+                dsn: '%env(string:MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    vhost: '%env(string:MESSENGER_VHOST)%'
+                    exchange:
+                        name: '%env(string:MESSENGER_EXCHANGE_CHECKOUT)%'
+                        type: direct
+            async_payment_result:
+                dsn: '%env(string:MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    vhost: '%env(string:MESSENGER_VHOST)%'
+                    exchange:
+                        name: '%env(string:MESSENGER_EXCHANGE_PAYMENT)%'
+                        type: direct
+                    queues:
+                        carts_payment_succeeded_queue:
+                            binding_keys: [ payment_succeeded ]
+                        carts_payment_failed_queue:
+                            binding_keys: [ payment_failed ]
             failed:
                 dsn: 'doctrine://default?queue_name=failed'
         routing:
             'App\Messenger\Message\UpdateInventoryMessage': async_register_application
+            'App\Messenger\Message\CheckoutRequestedMessage': async_checkout
+            'App\Messenger\Message\PaymentSucceededMessage': async_payment_result
+            'App\Messenger\Message\PaymentFailedMessage': async_payment_result
 
 # when@test:
 #    framework:

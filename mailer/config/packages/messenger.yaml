@@ -28,9 +28,19 @@ framework:
                     queues:
                         mailer_stock_out_queue:
                             binding_keys: [ mailer_stock_out_queue ]
+            async_esim_provisioned:
+                dsn: '%env(string:MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    vhost: '%env(string:MESSENGER_VHOST)%'
+                    exchange:
+                        name: '%env(string:MESSENGER_EXCHANGE_ESIM)%'
+                        type: direct
+                    queues:
+                        mailer_esim_provisioned_queue:
+                            binding_keys: [ esim_provisioned ]
             failed:
                 dsn: 'doctrine://default?queue_name=failed'
         routing:
             'App\Messenger\Message\UserSuccessfullyStoredMessage': async_application_mailer
             'App\Messenger\Message\NotificationStockOutMessage': async_stock_out_mailer
-
+            'App\Messenger\Message\EsimProvisionedMessage': async_esim_provisioned

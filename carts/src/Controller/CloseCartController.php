@@ -2,14 +2,9 @@
 
 namespace App\Controller;
 
-use App\Controller\Http\Request\AddCartPayload;
-use App\Service\AddToCartAction;
 use App\Service\CloseCartAction;
-use App\Service\FindUserByEmailAction;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CloseCartController extends AbstractController
@@ -21,7 +16,11 @@ class CloseCartController extends AbstractController
     #[Route('/api/cart/{id}/close', name: 'api_close_cart', methods: ['PATCH'])]
     public function __invoke(string $id): JsonResponse
     {
-        $this->closeCartAction->__invoke($id);
-        return new JsonResponse([], 204);
+        $cart = $this->closeCartAction->__invoke($id);
+
+        return new JsonResponse([
+            'id' => $cart->getId(),
+            'status' => $cart->getStatus(),
+        ], 202);
     }
 }

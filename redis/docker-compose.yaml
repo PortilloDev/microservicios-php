@@ -1,0 +1,20 @@
+version: '3.5'
+
+services:
+  ecommerce-ms-redis-service:
+    container_name: ecommerce-ms-redis-service
+    image: redis:7-alpine
+    command: [ 'redis-server', '--appendonly', 'yes' ]
+    ports:
+      - 6380:6379
+    volumes:
+      - ecommerce-ms-redis-service-data:/data
+    networks:
+      - ecommerce-microservices-network
+
+volumes:
+  ecommerce-ms-redis-service-data:
+
+networks:
+  ecommerce-microservices-network:
+    external: true

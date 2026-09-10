@@ -10,6 +10,9 @@ class Cart
 {
     public const STATUS_OPEN = 'open';
     public const STATUS_ORDERED = 'ordered';
+    public const STATUS_CHECKOUT_PENDING = 'checkout_pending';
+    public const STATUS_PAID = 'paid';
+    public const STATUS_PAYMENT_FAILED = 'payment_failed';
 
     private string $id;
     private \DateTime $createdAt;
