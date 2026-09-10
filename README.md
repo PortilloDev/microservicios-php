@@ -80,6 +80,24 @@ sf messenger:consume failed -vvv (mensajes fallidos)
 
 ```
 
+---
+### Ver logs centralizados
+
+Todos los servicios montan el proyecto en `/appdata/www`, así que su `var/log/dev.log` ya está en el host (no hace falta entrar a cada contenedor). Para seguirlos todos a la vez en un solo terminal:
+
+```bash
+make logs                          # todos los servicios
+make logs SERVICES="payments esim" # solo algunos
+```
+
+Cada línea va prefijada con el nombre del servicio y un color distinto. Para un único servicio también sirve:
+
+```bash
+tail -f payments/var/log/dev.log
+```
+
+> Alternativa "Docker-native": si prefieres `docker logs` o una UI web (Dozzle, Loki + Grafana), cambia el handler `dev` de Monolog a `php://stderr` en `config/packages/monolog.yaml` de cada servicio (o añade un segundo handler a stderr). Así Docker captura los logs y cualquier agregador los puede leer.
+
 
 ## Documentation
 

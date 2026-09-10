@@ -1,4 +1,4 @@
-.PHONY: help start-all stop-all build-all restart-all prepare-all setup
+.PHONY: help start-all stop-all build-all restart-all prepare-all setup logs
 
 help: ## Show this help message
 	@echo 'usage: make [target]'
@@ -86,6 +86,10 @@ console-payments: ## bash into Payments Service PHP container
 
 console-esim: ## bash into eSIM Service PHP container
 	make -C esim console
+
+
+logs: ## Follow every service dev.log in one terminal (filter with SERVICES="payments esim")
+	./scripts/logs.sh $(SERVICES)
 
 
 migrations-all: ## bash execute settings for all services
